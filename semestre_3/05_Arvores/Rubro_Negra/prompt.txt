@@ -1,0 +1,83 @@
+Você é um especialista em estruturas de dados e Python. Implemente, do zero, uma Árvore Rubro-Negra (red-black tree) em Python, seguindo rigorosamente as propriedades clássicas dessa estrutura.
+
+Requisitos gerais:
+1. Use somente a biblioteca padrão do Python; não utilize bibliotecas externas.
+2. Organize o código em duas classes principais: Node (nó) e RedBlackTree (árvore).
+3. Escreva código limpo, bem estruturado, com bons nomes de variáveis, comentários explicativos e docstrings para os métodos públicos.
+
+Modelo e propriedades da árvore rubro-negra:
+1. A árvore deve ser uma árvore binária de busca balanceada, em que a altura é \(O(\log n)\), onde \(n\) é o número de elementos.[file:1]
+2. Cada nó possui: chave (por exemplo, um inteiro), cor (rubra/vermelha ou negra/preta), ponteiro para o pai, filho esquerdo e filho direito.
+3. Todo nó é rubro (vermelho) ou negro (preto).[file:1]
+4. A raiz da árvore é sempre negra.[file:1]
+5. Todo nó nulo (NIL) deve ser tratado como nó negro (pode ser um nó sentinela compartilhado).[file:1]
+6. O pai de um nó rubro é sempre negro; não podem existir dois nós rubros consecutivos na relação pai–filho.[file:1]
+7. Qualquer caminho de um nó até um nó nulo possui o mesmo número de nós negros (propriedade de “altura negra”).[file:1]
+
+Classe Node:
+1. A classe Node deve ter, no mínimo, os seguintes atributos:
+   - key (chave)
+   - color (por exemplo, constantes RED e BLACK)
+   - parent
+   - left
+   - right
+2. Forneça um construtor que receba a chave e, opcionalmente, a cor (por padrão, rubra para novos nós não-NIL).
+
+Classe RedBlackTree:
+Implemente os seguintes componentes na classe RedBlackTree:
+
+1. Atributos:
+   - root: referência para a raiz da árvore.
+   - nil: nó sentinela negro (para representar nós nulos).
+
+2. Operações básicas internas:
+   - left_rotate(x): rotação à esquerda em torno de x.
+   - right_rotate(x): rotação à direita em torno de x.
+
+3. Inserção:
+   - Método insert(key) que:
+     a) Insere a nova chave inicialmente como em uma Árvore Binária de Busca (ABB).[file:1]
+     b) Cria o novo nó sempre com cor rubra.[file:1]
+     c) Após inserir, chama um método auxiliar (por exemplo, insert_fixup) para restaurar as propriedades da árvore rubro-negra.
+   - No insert_fixup, implemente pelo menos os casos descritos no material:
+     Caso 1: pai rubro e tio rubro:
+       - Trocar as cores do pai e do tio para negro.
+       - Trocar a cor do avô para rubro.
+       - Se o avô for a raiz, garantir que a raiz volte a ser negra.[file:1]
+     Caso 2: pai rubro e tio negro:
+       - Usar rotações (simples ou duplas), de forma análoga às rotações em árvore AVL, combinadas com recoloração, para restaurar as propriedades.[file:1]
+       - Tratar explicitamente os subcasos: pai filho-esquerdo / novo nó filho-esquerdo (rotação simples), pai filho-esquerdo / novo nó filho-direito (rotação dupla), e os casos simétricos à direita.
+   - Garante que, ao final da inserção, todas as propriedades de árvore rubro-negra sejam preservadas.
+
+4. Busca:
+   - Método search(key) que retorna o nó com a chave especificada ou None, usando a lógica padrão de busca em árvore binária de busca.
+   - Opcionalmente, exponha um método contains(key) que retorne True/False para facilitar o uso.
+
+5. Remoção:
+   - Método delete(key) que:
+     a) Localiza o nó com a chave indicada (se não existir, não faz nada ou lança uma exceção).
+     b) Remove o nó seguindo as mesmas ideias da ABB/AVL, considerando:
+        - Caso 1: o nó a ser removido é uma folha (sem filhos): remover diretamente e ajustar o ponteiro do pai.[file:1]
+        - Caso 2: o nó a ser removido possui apenas um filho: o filho substitui o nó na árvore, ajustando o ponteiro do pai.[file:1]
+        - Caso 3: o nó possui dois filhos: substituir pelo sucessor (ou predecessor) na ordem da ABB; depois remover o sucessor (ou predecessor) como nos casos 1 ou 2.[file:1]
+     c) Após a remoção física, chamar um método auxiliar (por exemplo, delete_fixup) para corrigir qualquer violação das propriedades de árvore rubro-negra (tratando casos de “duplo negro”, recolorações e rotações até restaurar todas as propriedades).
+
+6. Funções auxiliares de depuração:
+   - Método inorder() que retorna uma lista das chaves em ordem crescente.
+   - Método print_tree() ou equivalente, que mostre a estrutura (chave e cor de cada nó) de forma legível para depuração.
+   - Método que verifica programaticamente se todas as propriedades da árvore rubro-negra estão sendo respeitadas (por exemplo, validar que todos os caminhos têm a mesma altura negra, que não há dois rubros consecutivos, etc.).
+
+7. Testes:
+   - No final do arquivo, inclua um bloco de teste (por exemplo, em if __name__ == "__main__":) que:
+     a) Crie uma instância de RedBlackTree.
+     b) Insira a sequência de chaves 9, 8, 7, 6, 1, 2, 3, 4, 5 (nesta ordem), imprimindo a árvore após cada inserção ou pelo menos após todas as inserções.[file:1]
+     c) Insira também a sequência 4, 7, 12, 15, 3, 5, 14, 18 e mostre o resultado final da árvore.[file:1]
+     d) Realize algumas buscas em chaves existentes e inexistentes.
+     e) Remova alguns nós que cubram os casos de remoção (folha, com um filho, com dois filhos) e mostre a árvore após cada remoção.
+   - Opcionalmente, inclua asserts ou prints que verifiquem as propriedades da árvore após cada operação.
+
+Objetivo:
+Entregar um único arquivo Python contendo:
+- As classes Node e RedBlackTree.
+- Todas as operações (inserção, busca e remoção) com balanceamento por cores e rotações.
+- Funções de teste que demonstrem claramente que a árvore se mantém balanceada e respeita as propriedades de uma árvore rubro-negra após uma sequência de inserções e remoções.
