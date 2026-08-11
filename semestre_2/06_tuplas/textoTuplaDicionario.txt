@@ -1,0 +1,183 @@
+Tuplas (tuple)
+
+Estrutura imutável, ordenada, indexável.
+
+Criar: t = (1, 2, 3) ou t = 1, 2, 3. Tupla unitária: t = (1,).
+
+Imutabilidade: não dá t[0] = 5. Para modificar converte para lista, altera e volta: lst = list(t); lst[0]=5; t = tuple(lst).
+
+Operações e funções úteis
+
+Index: t[0], slicing t[1:3]
+
+Concatenação: t + (4,5)
+
+Repetição: t * 3
+
+len(t), min(t), max(t) (quando elementos comparáveis)
+
+t.count(x) — conta ocorrências
+
+t.index(x) — índice da primeira ocorrência (lança ValueError se não achar)
+
+Desempacotamento: a, b, c = t
+
+Desempacotamento com resto: a, *rest = t ou first, *middle, last = t
+
+Verificação de membro: x in t ou x not in t
+
+Ordenação — tupla não tem método, use sorted(t) que retorna lista
+
+Exemplos com for e if
+t = (3, 1, 4, 1, 5)
+
+# iterar
+for x in t:
+    print(x)
+
+# contar maiores que 2
+count = 0
+for x in t:
+    if x > 2:
+        count += 1
+print(count)
+
+# desempacotar em loop (quando tupla de tuplas)
+pairs = ((1, 'a'), (2, 'b'))
+for i, ch in pairs:
+    print(i, ch)
+
+Dicionários (dict)
+
+Estrutura mapeamento chave -> valor. Chaves imutáveis (ex: str, int, tuple).
+
+Criar: d = {'a': 1, 'b': 2} ou d = dict(a=1, b=2) ou d = {}.
+
+Acesso e atribuição
+
+d[key] — lê (KeyError se não existir)
+
+d.get(key, default) — retorna default se não existir (mais seguro)
+
+d[key] = value — define/atualiza
+
+del d[key] — remove chave (KeyError se não existir)
+
+d.pop(key, default?) — remove e retorna valor
+
+d.popitem() — remove e retorna (chave, valor) do fim (útil para pilha)
+
+d.clear() — esvazia
+
+d.copy() — cópia rasa
+
+Métodos importantes
+
+d.keys() — view de chaves
+
+d.values() — view de valores
+
+d.items() — view de (chave, valor)
+
+d.update(other_dict) — mescla/atualiza
+
+d.setdefault(key, default) — retorna valor ou define com default se não existir
+
+len(d), key in d — membership
+
+Comprehension de dicionário
+d = {x: x*x for x in range(5)}  # {0:0,1:1,2:4,3:9,4:16}
+
+Mergir dicionários (Python 3.9+)
+
+c = a | b (novo dicionário resultante)
+
+a |= b (atualiza a)
+
+Ordenar
+
+sorted(d) => lista de chaves ordenadas
+
+sorted(d.items(), key=lambda kv: kv[1]) => ordenar por valor
+
+Exemplos com for e if
+d = {'alice': 25, 'bob': 30, 'carla': 22}
+
+# iterar chaves
+for name in d:
+    print(name)
+
+# iterar chaves e valores
+for name, age in d.items():
+    if age >= 25:
+        print(name, "tem >= 25")
+
+# filtrar e criar outro dicionário
+older = {name: age for name, age in d.items() if age > 24}
+
+# incrementar contadores (padrão comum)
+words = ["ola","teste","ola","python"]
+counts = {}
+for w in words:
+    if w in counts:
+        counts[w] += 1
+    else:
+        counts[w] = 1
+# equivalente mais curto:
+# from collections import defaultdict
+# counts = defaultdict(int)
+# for w in words: counts[w] += 1
+
+Dicionários aninhados e acessos seguros
+db = {
+    'user1': {'age': 30, 'city': 'SP'},
+    'user2': {'age': 22}
+}
+
+# acessar safe com get
+city = db.get('user2', {}).get('city', 'desconhecida')
+
+# criar entrada se não existir
+db.setdefault('user3', {})['age'] = 40
+
+Conversões úteis entre tuplas/listas/dicts
+
+tuple(list_), list(tuple_)
+
+do dict para lista de pares: list(d.items()) => [(k,v),...]
+
+criar dict a partir de lista de pares: dict([('a',1), ('b',2)])
+
+desempacotamento em chamadas: f(*my_tuple) e f(**my_dict) (args/kwargs)
+
+Boas práticas para provas
+
+Lembre que tuple é imutável; métodos como append não existem.
+
+dict é mutável; métodos keys(), values(), items() retornam views, não listas (pode-se converter com list(...)).
+
+Para evitar KeyError prefira get ou in antes de acessar.
+
+Saber criar comprehensions (tuple não tem comprehension — generator expression (x for x in ...) gera iterador).
+
+Saber desempacotar: a, b = (1,2) e em for: for k, v in d.items():
+
+Saber contar frequência com dicionário (padrão de prova).
+
+Exemplos práticos misturando tuplas e dicionários
+# lista de tuplas -> dicionário
+pairs = [('a',1), ('b',2)]
+d = dict(pairs)
+
+# usar tupla como chave em dict (imutável)
+d2 = {}
+coord = (10, 20)
+d2[coord] = "ponto A"
+
+# ordenar por valores e pegar top1 (usando items())
+best = max(d.items(), key=lambda kv: kv[1])  # retorna (chave, valor)
+
+Resumo rápido de métodos (cheat-sheet)
+
+Tupla: len, count, index, slicing, concatenar +, repetir *, in, desempacotamento.
+Dicionário: d[key], get, setdefault, pop, popitem, update, keys, values, items, copy, comprehension, in, len.

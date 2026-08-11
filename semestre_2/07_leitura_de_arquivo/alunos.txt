@@ -1,0 +1,5 @@
+Fox;7;8
+Kiape Lyn;10;7
+Lil Chaos;9;7
+Vulpes Visio;10;8
+Icaro;2;4
